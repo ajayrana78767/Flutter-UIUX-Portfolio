@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_ux_portfolio/pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,8 +15,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Ajay Kumar | Flutter Developer & UI/UX Designer',
+      theme: ThemeData(
+        textTheme: GoogleFonts.spaceGroteskTextTheme(),
+      ),
       //   theme: ThemeData.light(),
-      home: const PortfolioWebsite(),
+      home: HomePage(),
     );
   }
 }
@@ -62,7 +65,7 @@ class _PortfolioWebsiteState extends State<PortfolioWebsite> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    HomeSection(),
+                    HomePage(),
                     SizedBox(height: 20),
                     AboutSection(),
                     SizedBox(
@@ -212,243 +215,7 @@ class _SideNavBarState extends State<SideNavBar> {
   }
 }
 
-class HomeSection extends StatefulWidget {
-  const HomeSection({super.key});
 
-  @override
-  _HomeSectionState createState() => _HomeSectionState();
-}
-
-class _HomeSectionState extends State<HomeSection>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeInAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Animation Controller for Background Effect
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    )..repeat(reverse: true);
-
-    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
-    );
-
-    _slideAnimation =
-        Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Background Animation
-        // AnimatedBuilder(
-        //   animation: _animationController,
-        //   builder: (context, child) {
-        //     return SizedBox(
-        //       height: 700,
-        //       width: double.infinity,
-        //       // decoration: BoxDecoration(
-        //       //   gradient: LinearGradient(
-        //       //     begin: Alignment.topLeft,
-        //       //     end: Alignment.bottomRight,
-        //       //     colors: [
-        //       //       Colors.blueAccent
-        //       //           .withOpacity(0.2 + _animationController.value * 0.3),
-        //       //       Colors.purpleAccent
-        //       //           .withOpacity(0.3 + _animationController.value * 0.2),
-        //       //     ],
-        //       //   ),
-        //       //   // image: const DecorationImage(
-        //       //   //   image: AssetImage('assets/images/background.jpg'),
-        //       //   //   fit: BoxFit.cover,
-        //       //   //   opacity: 0.2,
-        //       //   // ),
-        //       // ),
-        //     );
-        //   },
-        // ),
-
-        // Content with Glassmorphism Effect
-        Center(
-          child: Container(
-            height: 650,
-            width: MediaQuery.of(context).size.width * 0.9,
-            padding: const EdgeInsets.all(40),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.2)),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.black.withOpacity(0.5),
-              //     blurRadius: 20,
-              //     spreadRadius: 5,
-              //   ),
-              // ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Profile Image with Fade In Effect
-                FadeTransition(
-                  opacity: _fadeInAnimation,
-                  child: SlideTransition(
-                    position: _slideAnimation,
-                    child: CircleAvatar(
-                      radius: 100,
-                      backgroundImage:
-                          AssetImage('assets/images/profile_image.jpg'),
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 50),
-
-                // Intro Section
-                SlideTransition(
-                  position: _slideAnimation,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Hello, I'm",
-                        style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          color: Colors.white60,
-                        ),
-                      ),
-                      Text(
-                        "Ajay Kumar",
-                        style: GoogleFonts.poppins(
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "Flutter Developer & UI/UX Designer",
-                        style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Social Media Icons with Hover Effect
-                      Row(
-                        children: [
-                          _buildSocialIcon(FontAwesomeIcons.linkedin,
-                              'https://linkedin.com/in/ajay-kumar-02b9b525b'),
-                          _buildSocialIcon(FontAwesomeIcons.github,
-                              'https://github.com/ajayrana78767'),
-                          _buildSocialIcon(FontAwesomeIcons.twitter,
-                              'https://x.com/AjayRana78767'),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Action Buttons with Hover Effect
-                      Row(
-                        children: [
-                          _buildHoverButton(
-                            text: "Hire Me",
-                            color: Colors.blueAccent,
-                            onPressed: () async {
-                              final Uri whatsappUri = Uri.parse(
-                                'https://wa.me/917876740036?text=Hello%20Ajay,%20I%20am%20interested%20in%20hiring%20you.',
-                              );
-                              if (!await launchUrl(whatsappUri,
-                                  mode: LaunchMode.externalApplication)) {
-                                throw 'Could not launch $whatsappUri';
-                              }
-                            },
-                          ),
-                          const SizedBox(width: 20),
-                          _buildHoverButton(
-                            text: "Download Resume",
-                            color: Colors.transparent,
-                            borderColor: Colors.blueAccent,
-                            textColor: Colors.white,
-                            onPressed: () async {
-                              final url = Uri.parse(
-                                  'https://drive.google.com/uc?export=download&id=1DQbRzcs9uNJJ5wTJK4dIt38uVxpayDdL');
-                              if (!await launchUrl(url,
-                                  mode: LaunchMode.externalApplication)) {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Function to build social media icons
-  Widget _buildSocialIcon(IconData icon, String url) {
-    return IconButton(
-      icon: FaIcon(icon, color: Colors.white),
-      onPressed: () async {
-        if (!await launchUrl(Uri.parse(url),
-            mode: LaunchMode.externalApplication)) {
-          throw 'Could not launch $url';
-        }
-      },
-      hoverColor: Colors.blueAccent.withOpacity(0.2),
-    );
-  }
-
-  // Function to build modern hover buttons
-  Widget _buildHoverButton({
-    required String text,
-    required Color color,
-    Color borderColor = Colors.transparent,
-    Color textColor = Colors.white,
-    required VoidCallback onPressed,
-  }) {
-    return MouseRegion(
-      onEnter: (event) => setState(() {}),
-      onExit: (event) => setState(() {}),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          side: BorderSide(color: borderColor),
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 18, color: textColor),
-        ),
-      ),
-    );
-  }
-}
 
 
 
