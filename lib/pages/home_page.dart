@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_ux_portfolio/Utils/colors_utils.dart';
@@ -58,443 +60,541 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: ColorsUtils.primaryColor.withOpacity(.25),
-        child: SafeArea(
-            child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Spacer(),
-                    Text(
-                      'Your Name',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
-                      ),
-                    ),
-                    SpacingUtils.wspace30,
-                    Spacer(),
-                    Text(
-                      'Work',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    SpacingUtils.wspace30,
-                    Text(
-                      'About',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    SpacingUtils.wspace30,
-                    Text(
-                      'My CV',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    SpacingUtils.wspace30,
-                    Text(
-                      'Contact',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      height: 450,
-                      width: double.infinity,
-                      child: CarouselSlider.builder(
-                        itemCount: projects.length,
-                        itemBuilder: (context, index, realIndex) =>
-                            _buildProjectCard(projects[index]),
-                        options: CarouselOptions(
-                          autoPlay: true,
-                          enlargeCenterPage: true,
-                          aspectRatio: 16 / 9,
-                          viewportFraction: 0.8,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _currentIndex = index; // Update the current index
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                        height: 16.0), // Space between carousel and dots
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        projects.length,
-                        (index) => AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          height: _currentIndex == index ? 12.0 : 8.0,
-                          width: _currentIndex == index ? 12.0 : 8.0,
-                          decoration: BoxDecoration(
-                            color: _currentIndex == index
-                                ? Colors.teal
-                                : Colors.grey,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+      body: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.loose,
+        children: [
+          // Positioned(
+          //   top:500,
+          //   bottom: 50,
+          //   right: 0,
+          //   left:0,
+          //   child:
+          //    Container(
+          //     width: MediaQuery.of(context).size.width, // Responsive width
+          //     height: MediaQuery.of(context).size.height/10, // Responsive height
+          //     decoration: const BoxDecoration(
+          //       image: DecorationImage(
+          //         image: AssetImage('assets/images/background3.jpg'),
+          //         fit: BoxFit.contain,
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
-                //  SizedBox(
-                //   height: 250,
-                //   child: PageView.builder(
-                //     itemCount: projects.length,
-                //     itemBuilder: (context, index) =>
-                //         _buildProjectCard(projects[index]),
-                //   ),
-                // ),
-                // Projects Grid Section
-                //   Wrap(
-                //   spacing: 16.0,
-                //   runSpacing: 16.0,
-                //   children: projects
-                //       .map((project) => _buildProjectCard(project))
-                //       .toList(),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.all(20.0),
-                //   child: FadeTransition(
-                //     opacity: _fadeInAnimation,
-                //     child: SlideTransition(
-                //       position: _slideAnimation,
-                //       child: GridView.builder(
-                //         shrinkWrap: true,
-                //         physics: const NeverScrollableScrollPhysics(),
-                //         gridDelegate:
-                //             const SliverGridDelegateWithFixedCrossAxisCount(
-                //           crossAxisCount: 3, // 3 items in each row
-                //           crossAxisSpacing: 20,
-                //           mainAxisSpacing: 20,
-                //           childAspectRatio: 1.2, // Adjust for card height
-                //         ),
-                //         itemCount: projects.length,
-                //         itemBuilder: (context, index) {
-                //           final project = projects[index];
-                //           return _buildProjectCard(
-                //               project['title']!, project['description']!);
-                //         },
-                //       ),
-                //     ),
-                //   ),
-              ),
-            Stack(
-  children: [
-    // Image as background
-    Positioned(
-      child: Image.asset(
-        'assets/images/background2.jpg',
-        fit: BoxFit.cover, // Ensures the image covers the screen
-      ),
-    ),
-    // Text on the left side of the image
-    Positioned(
-                    right: 30, // Adjust the right margin as needed
-                    top: 200, // Adjust the top margin as needed
-                    child: Text(
-                      'Your Text Here',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white, // Make text visible on the image
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Spacer(),
+                      Text(
+                        'Ajay Kumar',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
+                        ),
                       ),
-                    ),
+                      SpacingUtils.wspace30,
+                      Spacer(),
+                      Text(
+                        'Work',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      SpacingUtils.wspace30,
+                      Text(
+                        'About',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      SpacingUtils.wspace30,
+                      Text(
+                        'My CV',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      SpacingUtils.wspace30,
+                      Text(
+                        'Contact',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      Spacer(),
+                    ],
                   ),
-  ],
-)
-, // Contact Us Section
-              Padding(
-                padding: const EdgeInsets.all(80.0),
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Contact Us',
-                            style: TextStyle(
-                              fontSize: 16,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.black,
-                              decorationThickness: 1.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: 550,
+                        width: double.infinity,
+                        child: CarouselSlider.builder(
+                          itemCount: projects.length,
+                          itemBuilder: (context, index, realIndex) =>
+                              _buildProjectCard(projects[index]),
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                            aspectRatio: 16 / 9,
+                            viewportFraction: 0.8,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentIndex =
+                                    index; // Update the current index
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                          height: 16.0), // Space between carousel and dots
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          projects.length,
+                          (index) => AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            height: _currentIndex == index ? 12.0 : 8.0,
+                            width: _currentIndex == index ? 12.0 : 8.0,
+                            decoration: BoxDecoration(
+                              color: _currentIndex == index
+                                  ? Colors.teal
+                                  : Colors.grey,
+                              shape: BoxShape.circle,
                             ),
                           ),
-                          SpacingUtils.space20,
-                          // Social Media Section
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  FontAwesomeIcons.facebook,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  // Add Facebook action here
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  FontAwesomeIcons.twitter,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  // Add Twitter action here
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  FontAwesomeIcons.instagram,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  // Add Instagram action here
-                                },
-                              ),
-                            ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  //  SizedBox(
+                  //   height: 250,
+                  //   child: PageView.builder(
+                  //     itemCount: projects.length,
+                  //     itemBuilder: (context, index) =>
+                  //         _buildProjectCard(projects[index]),
+                  //   ),
+                  // ),
+                  // Projects Grid Section
+                  //   Wrap(
+                  //   spacing: 16.0,
+                  //   runSpacing: 16.0,
+                  //   children: projects
+                  //       .map((project) => _buildProjectCard(project))
+                  //       .toList(),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(20.0),
+                  //   child: FadeTransition(
+                  //     opacity: _fadeInAnimation,
+                  //     child: SlideTransition(
+                  //       position: _slideAnimation,
+                  //       child: GridView.builder(
+                  //         shrinkWrap: true,
+                  //         physics: const NeverScrollableScrollPhysics(),
+                  //         gridDelegate:
+                  //             const SliverGridDelegateWithFixedCrossAxisCount(
+                  //           crossAxisCount: 3, // 3 items in each row
+                  //           crossAxisSpacing: 20,
+                  //           mainAxisSpacing: 20,
+                  //           childAspectRatio: 1.2, // Adjust for card height
+                  //         ),
+                  //         itemCount: projects.length,
+                  //         itemBuilder: (context, index) {
+                  //           final project = projects[index];
+                  //           return _buildProjectCard(
+                  //               project['title']!, project['description']!);
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ),
+                ),
+                // Positioned(
+                //   right: 0, // Align to the right side
+                //   top: 0,
+                //   bottom: 0, // Make the image fixed and cover the full height
+                //   child: Image.asset(
+                //     'assets/images/background3.jpg',
+                //     fit: BoxFit.cover, // Keeps image proportionate
+                //     width: 600, // Set a fixed width for the image
+                //   ),
+                // ),
+
+                // Scrollable Text Section
+                // Container(height: 200,decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/background3.jpg'),fit:
+                // BoxFit.cover)),), // Space from the top
+                SpacingUtils.space40,
+                Stack(
+                  children: [
+                    // Blurred Background Image
+                    Positioned.fill(
+                      child: ImageFiltered(
+                        imageFilter: ImageFilter.blur(
+                            sigmaX: 5, sigmaY: 5), // Blur intensity
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/6.jpg'),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          SpacingUtils.space20,
-                          // Back to Top Button
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  // Add Back to Top action here
-                                  // Use ScrollController to scroll to top
-                                },
-                                icon: Icon(FontAwesomeIcons.circleUp),
-                              ),
-                              Text('Back to Top'),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Subscribe to Updates Section
-                          Text('Subscribe to Updates',
-                              style: TextStyle(fontSize: 16)),
-                          SpacingUtils.space10, // Text('Email Address'),
-                          // SizedBox(height: 5),
-                          Container(
-                            width: 490,
-                            color: Colors.white,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Enter your email',
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.withOpacity(.15),
-                                  ),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.withOpacity(.15),
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
 
-                          SizedBox(height: 10),
-                          SizedBox(
-                            width: 490,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Add subscribe action
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.black87,
-                                backgroundColor: ColorsUtils.primaryColor,
-                                elevation: 0.0,
-                                shadowColor: Colors.white,
-                                minimumSize: Size(490, 56),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        16), // Match padding with TextField
-                              ).copyWith(
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.zero,
+                    // Foreground Content
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 150.0),
+                            child: RichText(
+                              text: const TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '"',
+                                    style: TextStyle(
+                                      fontSize: 70,
+                                      color: ColorsUtils
+                                          .primaryColor, // Replace with ColorsUtils.primaryColor
+                                    ),
                                   ),
-                                ),
+                                  TextSpan(
+                                    text:
+                                        'I’m a Flutter Developer and UI/UX Designer at Synergy Soft India with 1+ years of experience. Skilled in Dart, Flutter, GetX, Provider, and REST APIs, I specialize in creating seamless mobile experiences. Proficient in Figma and Adobe Photoshop, I excel at prototyping, wireframing, and crafting user-centered designs.\n\nI transitioned from business administration to tech, combining design expertise with development skills. Passionate about continuous learning and delivering innovative solutions.',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '"',
+                                    style: TextStyle(
+                                      fontSize: 70,
+                                      color: ColorsUtils.primaryColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              child: Text('Subscribe Now'),
                             ),
                           ),
-                          SpacingUtils.space20,
-                          // Copyright Text
-                          Text(
-                            '© 2025 Your Name. All Rights Reserved.',
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    )
+                        ),
+                        const SizedBox(width: 20),
+                        Image.asset(
+                          'assets/images/my_image.png',
+                          width: 730,
+                          height: 730,
+                          fit: BoxFit.cover,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ),
 
-              // Padding(
-              //   padding: const EdgeInsets.all(30.0),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       // Contact Us Section
-              //       // Text(
-              //       //   'Contact Us',
-              //       //   style: TextStyle(
-              //       //     fontSize: 20,
-              //       //     fontWeight: FontWeight.bold,
-              //       //   ),
-              //       // ),
-              //       const SizedBox(height: 10),
-              //       Text(
-              //         'Contact Us',
-              //         style: TextStyle(
-              //           fontSize: 16,
-              //           decoration: TextDecoration
-              //               .underline, // This will underline the text
-              //           decorationColor: Colors.black, // Line color (optional)
-              //           decorationThickness:
-              //               1.0, // Thickness of the underline (optional)
-              //         ),
-              //       ),
-              //       SpacingUtils.space20,
-              //       Text(
-              //         '© 2025 Your Name. All Rights Reserved.',
-              //         style: TextStyle(fontSize: 14, color: Colors.grey),
-              //       ),
-              //       SpacingUtils.space40,
+                // Contact Us Section
+                Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Contact Us',
+                              style: TextStyle(
+                                fontSize: 16,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.black,
+                                decorationThickness: 1.0,
+                              ),
+                            ),
+                            SpacingUtils.space20,
+                            // Social Media Section
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    FontAwesomeIcons.facebook,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    // Add Facebook action here
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    FontAwesomeIcons.twitter,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    // Add Twitter action here
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    FontAwesomeIcons.instagram,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    // Add Instagram action here
+                                  },
+                                ),
+                              ],
+                            ),
+                            SpacingUtils.space20,
+                            // Back to Top Button
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    // Add Back to Top action here
+                                    // Use ScrollController to scroll to top
+                                  },
+                                  icon: Icon(FontAwesomeIcons.circleUp),
+                                ),
+                                Text('Back to Top'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Subscribe to Updates Section
+                            Text('Subscribe to Updates',
+                                style: TextStyle(fontSize: 16)),
+                            SpacingUtils.space10, // Text('Email Address'),
+                            // SizedBox(height: 5),
+                            Container(
+                              width: 490,
+                              color: Colors.white,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Enter your email',
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey.withOpacity(.15),
+                                    ),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey.withOpacity(.15),
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
 
-              //       // Text('Contact Us',
-              //       //     style: TextStyle(
-              //       //       fontSize: 16,
-              //       //     )),
-              //       // const SizedBox(height: 5),
-              //       // Text('Press', style: TextStyle(fontSize: 16)),
-              //       // const SizedBox(height: 10),
+                            SizedBox(height: 10),
+                            SizedBox(
+                              width: 490,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Add subscribe action
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.black87,
+                                  backgroundColor: ColorsUtils.primaryColor,
+                                  elevation: 0.0,
+                                  shadowColor: Colors.white,
+                                  minimumSize: Size(490, 56),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          16), // Match padding with TextField
+                                ).copyWith(
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                  ),
+                                ),
+                                child: Text('Subscribe Now'),
+                              ),
+                            ),
+                            SpacingUtils.space20,
+                            // Copyright Text
+                            Text(
+                              '© 2025 Ajay Kumar. All Rights Reserved.',
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.grey),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
 
-              //       // Subscribe to Updates Section
-              //       // Text(
-              //       //   'Subscribe to Updates',
-              //       //   style: TextStyle(
-              //       //     fontSize: 20,
-              //       //     fontWeight: FontWeight.bold,
-              //       //   ),
-              //       // ),
-              //       // const SizedBox(height: 10),
-              //       // Text('Email Address'),
-              //       // const SizedBox(height: 5),
-              //       // TextField(
-              //       //   decoration: InputDecoration(
-              //       //     hintText: 'Enter your email',
-              //       //     border: OutlineInputBorder(),
-              //       //   ),
-              //       // ),
-              //       // const SizedBox(height: 10),
-              //       // ElevatedButton(
-              //       //   onPressed: () {
-              //       //     // Add subscribe action
-              //       //   },
-              //       //   child: Text('Subscribe Now'),
-              //       // ),
-              //       // const SizedBox(height: 20),
+                // Padding(
+                //   padding: const EdgeInsets.all(30.0),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       // Contact Us Section
+                //       // Text(
+                //       //   'Contact Us',
+                //       //   style: TextStyle(
+                //       //     fontSize: 20,
+                //       //     fontWeight: FontWeight.bold,
+                //       //   ),
+                //       // ),
+                //       const SizedBox(height: 10),
+                //       Text(
+                //         'Contact Us',
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           decoration: TextDecoration
+                //               .underline, // This will underline the text
+                //           decorationColor: Colors.black, // Line color (optional)
+                //           decorationThickness:
+                //               1.0, // Thickness of the underline (optional)
+                //         ),
+                //       ),
+                //       SpacingUtils.space20,
+                //       Text(
+                //         '© 2025 Your Name. All Rights Reserved.',
+                //         style: TextStyle(fontSize: 14, color: Colors.grey),
+                //       ),
+                //       SpacingUtils.space40,
 
-              //       // Social Media Section
-              //       Row(
-              //         mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //           IconButton(
-              //             icon: Icon(
-              //               FontAwesomeIcons.facebook,
-              //               color: Colors.black,
-              //             ),
-              //             onPressed: () {
-              //               // Add Facebook action here
-              //             },
-              //           ),
-              //           IconButton(
-              //             icon: Icon(
-              //               FontAwesomeIcons.twitter,
-              //               color: Colors.black,
-              //             ),
-              //             onPressed: () {
-              //               // Add Twitter action here
-              //             },
-              //           ),
-              //           IconButton(
-              //             icon: Icon(
-              //               FontAwesomeIcons.instagram,
-              //               color: Colors.black,
-              //             ),
-              //             onPressed: () {
-              //               // Add Instagram action here
-              //             },
-              //           ),
-              //         ],
-              //       ),
-              //       SpacingUtils.space20,
-              //       // Back to Top Button
-              //       Row(
-              //         children: [
-              //           IconButton(
-              //               onPressed: () {},
-              //               icon: Icon(FontAwesomeIcons.circleUp)),
-              //           Text('Back to Top'),
-              //           // Center(
-              //           //   child: ElevatedButton(
-              //           //     onPressed: () {
-              //           //       // Scroll to top action
-              //           //     },
-              //           //     child:
-              //           //   ),
-              //           // ),
-              //         ],
-              //       ),
-              //       SpacingUtils.space20,
-              //       // Copyright Text
-              //     ],
-              //   ),
-              // ),
-            ],
+                //       // Text('Contact Us',
+                //       //     style: TextStyle(
+                //       //       fontSize: 16,
+                //       //     )),
+                //       // const SizedBox(height: 5),
+                //       // Text('Press', style: TextStyle(fontSize: 16)),
+                //       // const SizedBox(height: 10),
+
+                //       // Subscribe to Updates Section
+                //       // Text(
+                //       //   'Subscribe to Updates',
+                //       //   style: TextStyle(
+                //       //     fontSize: 20,
+                //       //     fontWeight: FontWeight.bold,
+                //       //   ),
+                //       // ),
+                //       // const SizedBox(height: 10),
+                //       // Text('Email Address'),
+                //       // const SizedBox(height: 5),
+                //       // TextField(
+                //       //   decoration: InputDecoration(
+                //       //     hintText: 'Enter your email',
+                //       //     border: OutlineInputBorder(),
+                //       //   ),
+                //       // ),
+                //       // const SizedBox(height: 10),
+                //       // ElevatedButton(
+                //       //   onPressed: () {
+                //       //     // Add subscribe action
+                //       //   },
+                //       //   child: Text('Subscribe Now'),
+                //       // ),
+                //       // const SizedBox(height: 20),
+
+                //       // Social Media Section
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.start,
+                //         children: [
+                //           IconButton(
+                //             icon: Icon(
+                //               FontAwesomeIcons.facebook,
+                //               color: Colors.black,
+                //             ),
+                //             onPressed: () {
+                //               // Add Facebook action here
+                //             },
+                //           ),
+                //           IconButton(
+                //             icon: Icon(
+                //               FontAwesomeIcons.twitter,
+                //               color: Colors.black,
+                //             ),
+                //             onPressed: () {
+                //               // Add Twitter action here
+                //             },
+                //           ),
+                //           IconButton(
+                //             icon: Icon(
+                //               FontAwesomeIcons.instagram,
+                //               color: Colors.black,
+                //             ),
+                //             onPressed: () {
+                //               // Add Instagram action here
+                //             },
+                //           ),
+                //         ],
+                //       ),
+                //       SpacingUtils.space20,
+                //       // Back to Top Button
+                //       Row(
+                //         children: [
+                //           IconButton(
+                //               onPressed: () {},
+                //               icon: Icon(FontAwesomeIcons.circleUp)),
+                //           Text('Back to Top'),
+                //           // Center(
+                //           //   child: ElevatedButton(
+                //           //     onPressed: () {
+                //           //       // Scroll to top action
+                //           //     },
+                //           //     child:
+                //           //   ),
+                //           // ),
+                //         ],
+                //       ),
+                //       SpacingUtils.space20,
+                //       // Copyright Text
+                //     ],
+                //   ),
+                // ),
+              ],
+            ),
           ),
-        )),
+
+          //         Positioned(
+          //   right: 0,
+          //   top: 500, // Adjust to place image after the slider
+          //   bottom: 0,
+          //   child: Container(
+          //     width: 1200,
+          //     decoration: BoxDecoration(
+          //       image: DecorationImage(
+          //         image: AssetImage('assets/images/background3.jpg'),
+          //         // fit: BoxFit.cover,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+        ],
       ),
     );
     // Stack(
