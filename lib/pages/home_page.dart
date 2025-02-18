@@ -16,585 +16,361 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeInAnimation;
-  late Animation<Offset> _slideAnimation;
-
+  // late AnimationController _animationController;
+  // late Animation<double> _fadeInAnimation;
+  // late Animation<Offset> _slideAnimation;
+  int _hoverIndex = -1; // Track hovered index
   @override
   void initState() {
     super.initState();
 
-    // Animation Controller for Background Effect
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    )..repeat(reverse: true);
+    // // Animation Controller for Background Effect
+    // _animationController = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(seconds: 5),
+    // )..repeat(reverse: true);
 
-    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
-    );
+    // _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    //   CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    // );
 
-    _slideAnimation =
-        Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-    );
+    // _slideAnimation =
+    //     Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(
+    //   CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    // );
   }
 
   // Sample Project List
   final List<Map<String, String>> projects = [
-    {'title': 'Project 1', 'description': 'Flutter Portfolio Website'},
-    {'title': 'Project 2', 'description': 'E-Commerce App'},
-    {'title': 'Project 3', 'description': 'Weather Forecast App'},
-    {'title': 'Project 4', 'description': 'Todo App'},
-    {'title': 'Project 5', 'description': 'Chat Application'},
-    {'title': 'Project 6', 'description': 'Blog Website'},
+    {
+      'title': 'MOHVAX',
+      'description': 'A child vaccination mobile app.',
+      'image': 'assets/images/project1.jpg'
+    },
+    {
+      'title': 'Book Ladder',
+      'description': 'A selling and donating books app.',
+      'image': 'assets/images/project2.jpg'
+    },
+    {
+      'title': 'Labour Assessment APP',
+      'description': 'A reduce heavy work load app.',
+      'image': 'assets/images/project3.jpg'
+    },
+    {
+      'title': 'Pizza Deck',
+      'description': 'App that offers a pizza as a product ',
+      'image': 'assets/images/project4.jpg'
+    },
   ];
   int _currentIndex = 0;
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _animationController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        clipBehavior: Clip.none,
-        fit: StackFit.loose,
-        children: [
-          // Positioned(
-          //   top:500,
-          //   bottom: 50,
-          //   right: 0,
-          //   left:0,
-          //   child:
-          //    Container(
-          //     width: MediaQuery.of(context).size.width, // Responsive width
-          //     height: MediaQuery.of(context).size.height/10, // Responsive height
-          //     decoration: const BoxDecoration(
-          //       image: DecorationImage(
-          //         image: AssetImage('assets/images/background3.jpg'),
-          //         fit: BoxFit.contain,
-          //       ),
-          //     ),
-          //   ),
-          // ),
-
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: Row(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(50),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Spacer(),
+                  Text(
+                    'Ajay Kumar',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
+                    ),
+                  ),
+                  SpacingUtils.wspace30,
+                  Spacer(),
+                  Text(
+                    'Work',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  SpacingUtils.wspace30,
+                  Text(
+                    'About',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  SpacingUtils.wspace30,
+                  Text(
+                    'My CV',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  SpacingUtils.wspace30,
+                  Text(
+                    'Contact',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  Spacer(),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 550,
+                    width: double.infinity,
+                    child: CarouselSlider.builder(
+                      itemCount: projects.length,
+                      itemBuilder: (context, index, realIndex) =>
+                          _buildProjectCard(projects[index], index),
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        aspectRatio: 16 / 9,
+                        viewportFraction: 0.8,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentIndex = index; // Update the current index
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                      height: 16.0), // Space between carousel and dots
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Spacer(),
-                      Text(
-                        'Ajay Kumar',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
+                    children: List.generate(
+                      projects.length,
+                      (index) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                        height: _currentIndex == index ? 12.0 : 8.0,
+                        width: _currentIndex == index ? 12.0 : 8.0,
+                        decoration: BoxDecoration(
+                          color: _currentIndex == index
+                              ? Colors.teal
+                              : Colors.grey,
+                          shape: BoxShape.circle,
                         ),
                       ),
-                      SpacingUtils.wspace30,
-                      Spacer(),
-                      Text(
-                        'Work',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SpacingUtils.space40,
+            Stack(
+              children: [
+                // Blurred Background Image
+                Positioned.fill(
+                  child: ImageFiltered(
+                    imageFilter: ImageFilter.blur(
+                        sigmaX: 5, sigmaY: 5), // Blur intensity
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 1,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/6.jpg'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      SpacingUtils.wspace30,
-                      Text(
-                        'About',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      SpacingUtils.wspace30,
-                      Text(
-                        'My CV',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      SpacingUtils.wspace30,
-                      Text(
-                        'Contact',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      Spacer(),
-                    ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        height: 550,
-                        width: double.infinity,
-                        child: CarouselSlider.builder(
-                          itemCount: projects.length,
-                          itemBuilder: (context, index, realIndex) =>
-                              _buildProjectCard(projects[index]),
-                          options: CarouselOptions(
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                            aspectRatio: 16 / 9,
-                            viewportFraction: 0.8,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _currentIndex =
-                                    index; // Update the current index
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                          height: 16.0), // Space between carousel and dots
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          projects.length,
-                          (index) => AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                            height: _currentIndex == index ? 12.0 : 8.0,
-                            width: _currentIndex == index ? 12.0 : 8.0,
-                            decoration: BoxDecoration(
-                              color: _currentIndex == index
-                                  ? Colors.teal
-                                  : Colors.grey,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
 
-                  //  SizedBox(
-                  //   height: 250,
-                  //   child: PageView.builder(
-                  //     itemCount: projects.length,
-                  //     itemBuilder: (context, index) =>
-                  //         _buildProjectCard(projects[index]),
-                  //   ),
-                  // ),
-                  // Projects Grid Section
-                  //   Wrap(
-                  //   spacing: 16.0,
-                  //   runSpacing: 16.0,
-                  //   children: projects
-                  //       .map((project) => _buildProjectCard(project))
-                  //       .toList(),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(20.0),
-                  //   child: FadeTransition(
-                  //     opacity: _fadeInAnimation,
-                  //     child: SlideTransition(
-                  //       position: _slideAnimation,
-                  //       child: GridView.builder(
-                  //         shrinkWrap: true,
-                  //         physics: const NeverScrollableScrollPhysics(),
-                  //         gridDelegate:
-                  //             const SliverGridDelegateWithFixedCrossAxisCount(
-                  //           crossAxisCount: 3, // 3 items in each row
-                  //           crossAxisSpacing: 20,
-                  //           mainAxisSpacing: 20,
-                  //           childAspectRatio: 1.2, // Adjust for card height
-                  //         ),
-                  //         itemCount: projects.length,
-                  //         itemBuilder: (context, index) {
-                  //           final project = projects[index];
-                  //           return _buildProjectCard(
-                  //               project['title']!, project['description']!);
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ),
-                ),
-                // Positioned(
-                //   right: 0, // Align to the right side
-                //   top: 0,
-                //   bottom: 0, // Make the image fixed and cover the full height
-                //   child: Image.asset(
-                //     'assets/images/background3.jpg',
-                //     fit: BoxFit.cover, // Keeps image proportionate
-                //     width: 600, // Set a fixed width for the image
-                //   ),
-                // ),
-
-                // Scrollable Text Section
-                // Container(height: 200,decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/background3.jpg'),fit:
-                // BoxFit.cover)),), // Space from the top
-                SpacingUtils.space40,
-                Stack(
+                // Foreground Content
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // Blurred Background Image
-                    Positioned.fill(
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(
-                            sigmaX: 5, sigmaY: 5), // Blur intensity
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/6.jpg'),
-                              fit: BoxFit.cover,
-                            ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 150.0,
+                        ),
+                        child: RichText(
+                          text: const TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '"',
+                                style: TextStyle(
+                                  fontSize: 70,
+                                  color: ColorsUtils
+                                      .primaryColor, // Replace with ColorsUtils.primaryColor
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                    'I’m a Flutter Developer and UI/UX Designer at Synergy Soft India with 1+ years of experience. Skilled in Dart, Flutter, GetX, Provider, and REST APIs, I specialize in creating seamless mobile experiences. Proficient in Figma and Adobe Photoshop, I excel at prototyping, wireframing, and crafting user-centered designs.\n\nI transitioned from business administration to tech, combining design expertise with development skills. Passionate about continuous learning and delivering innovative solutions.',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  height: 1.5,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '"',
+                                style: TextStyle(
+                                  fontSize: 70,
+                                  color: ColorsUtils.primaryColor,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-
-                    // Foreground Content
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 150.0),
-                            child: RichText(
-                              text: const TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '"',
-                                    style: TextStyle(
-                                      fontSize: 70,
-                                      color: ColorsUtils
-                                          .primaryColor, // Replace with ColorsUtils.primaryColor
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        'I’m a Flutter Developer and UI/UX Designer at Synergy Soft India with 1+ years of experience. Skilled in Dart, Flutter, GetX, Provider, and REST APIs, I specialize in creating seamless mobile experiences. Proficient in Figma and Adobe Photoshop, I excel at prototyping, wireframing, and crafting user-centered designs.\n\nI transitioned from business administration to tech, combining design expertise with development skills. Passionate about continuous learning and delivering innovative solutions.',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      height: 1.5,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: '"',
-                                    style: TextStyle(
-                                      fontSize: 70,
-                                      color: ColorsUtils.primaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Image.asset(
-                          'assets/images/my_image.png',
-                          width: 730,
-                          height: 730,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
+                    Image.asset(
+                      'assets/images/my_image.png',
+                      width: 730,
+                      height: 730,
+                      fit: BoxFit.cover,
                     ),
                   ],
                 ),
-
-                // Contact Us Section
-                Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Contact Us',
-                              style: TextStyle(
-                                fontSize: 16,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.black,
-                                decorationThickness: 1.0,
-                              ),
-                            ),
-                            SpacingUtils.space20,
-                            // Social Media Section
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                IconButton(
-                                  icon: Icon(
-                                    FontAwesomeIcons.facebook,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    // Add Facebook action here
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    FontAwesomeIcons.twitter,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    // Add Twitter action here
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    FontAwesomeIcons.instagram,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    // Add Instagram action here
-                                  },
-                                ),
-                              ],
-                            ),
-                            SpacingUtils.space20,
-                            // Back to Top Button
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    // Add Back to Top action here
-                                    // Use ScrollController to scroll to top
-                                  },
-                                  icon: Icon(FontAwesomeIcons.circleUp),
-                                ),
-                                Text('Back to Top'),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Subscribe to Updates Section
-                            Text('Subscribe to Updates',
-                                style: TextStyle(fontSize: 16)),
-                            SpacingUtils.space10, // Text('Email Address'),
-                            // SizedBox(height: 5),
-                            Container(
-                              width: 490,
-                              color: Colors.white,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter your email',
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.grey.withOpacity(.15),
-                                    ),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.grey.withOpacity(.15),
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            SizedBox(height: 10),
-                            SizedBox(
-                              width: 490,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  // Add subscribe action
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.black87,
-                                  backgroundColor: ColorsUtils.primaryColor,
-                                  elevation: 0.0,
-                                  shadowColor: Colors.white,
-                                  minimumSize: Size(490, 56),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          16), // Match padding with TextField
-                                ).copyWith(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.zero,
-                                    ),
-                                  ),
-                                ),
-                                child: Text('Subscribe Now'),
-                              ),
-                            ),
-                            SpacingUtils.space20,
-                            // Copyright Text
-                            Text(
-                              '© 2025 Ajay Kumar. All Rights Reserved.',
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.grey),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-
-                // Padding(
-                //   padding: const EdgeInsets.all(30.0),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       // Contact Us Section
-                //       // Text(
-                //       //   'Contact Us',
-                //       //   style: TextStyle(
-                //       //     fontSize: 20,
-                //       //     fontWeight: FontWeight.bold,
-                //       //   ),
-                //       // ),
-                //       const SizedBox(height: 10),
-                //       Text(
-                //         'Contact Us',
-                //         style: TextStyle(
-                //           fontSize: 16,
-                //           decoration: TextDecoration
-                //               .underline, // This will underline the text
-                //           decorationColor: Colors.black, // Line color (optional)
-                //           decorationThickness:
-                //               1.0, // Thickness of the underline (optional)
-                //         ),
-                //       ),
-                //       SpacingUtils.space20,
-                //       Text(
-                //         '© 2025 Your Name. All Rights Reserved.',
-                //         style: TextStyle(fontSize: 14, color: Colors.grey),
-                //       ),
-                //       SpacingUtils.space40,
-
-                //       // Text('Contact Us',
-                //       //     style: TextStyle(
-                //       //       fontSize: 16,
-                //       //     )),
-                //       // const SizedBox(height: 5),
-                //       // Text('Press', style: TextStyle(fontSize: 16)),
-                //       // const SizedBox(height: 10),
-
-                //       // Subscribe to Updates Section
-                //       // Text(
-                //       //   'Subscribe to Updates',
-                //       //   style: TextStyle(
-                //       //     fontSize: 20,
-                //       //     fontWeight: FontWeight.bold,
-                //       //   ),
-                //       // ),
-                //       // const SizedBox(height: 10),
-                //       // Text('Email Address'),
-                //       // const SizedBox(height: 5),
-                //       // TextField(
-                //       //   decoration: InputDecoration(
-                //       //     hintText: 'Enter your email',
-                //       //     border: OutlineInputBorder(),
-                //       //   ),
-                //       // ),
-                //       // const SizedBox(height: 10),
-                //       // ElevatedButton(
-                //       //   onPressed: () {
-                //       //     // Add subscribe action
-                //       //   },
-                //       //   child: Text('Subscribe Now'),
-                //       // ),
-                //       // const SizedBox(height: 20),
-
-                //       // Social Media Section
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.start,
-                //         children: [
-                //           IconButton(
-                //             icon: Icon(
-                //               FontAwesomeIcons.facebook,
-                //               color: Colors.black,
-                //             ),
-                //             onPressed: () {
-                //               // Add Facebook action here
-                //             },
-                //           ),
-                //           IconButton(
-                //             icon: Icon(
-                //               FontAwesomeIcons.twitter,
-                //               color: Colors.black,
-                //             ),
-                //             onPressed: () {
-                //               // Add Twitter action here
-                //             },
-                //           ),
-                //           IconButton(
-                //             icon: Icon(
-                //               FontAwesomeIcons.instagram,
-                //               color: Colors.black,
-                //             ),
-                //             onPressed: () {
-                //               // Add Instagram action here
-                //             },
-                //           ),
-                //         ],
-                //       ),
-                //       SpacingUtils.space20,
-                //       // Back to Top Button
-                //       Row(
-                //         children: [
-                //           IconButton(
-                //               onPressed: () {},
-                //               icon: Icon(FontAwesomeIcons.circleUp)),
-                //           Text('Back to Top'),
-                //           // Center(
-                //           //   child: ElevatedButton(
-                //           //     onPressed: () {
-                //           //       // Scroll to top action
-                //           //     },
-                //           //     child:
-                //           //   ),
-                //           // ),
-                //         ],
-                //       ),
-                //       SpacingUtils.space20,
-                //       // Copyright Text
-                //     ],
-                //   ),
-                // ),
               ],
             ),
-          ),
 
-          //         Positioned(
-          //   right: 0,
-          //   top: 500, // Adjust to place image after the slider
-          //   bottom: 0,
-          //   child: Container(
-          //     width: 1200,
-          //     decoration: BoxDecoration(
-          //       image: DecorationImage(
-          //         image: AssetImage('assets/images/background3.jpg'),
-          //         // fit: BoxFit.cover,
-          //       ),
-          //     ),
-          //   ),
-          // ),
-        ],
+            // Contact Us Section
+            Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Contact Us',
+                          style: TextStyle(
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.black,
+                            decorationThickness: 1.0,
+                          ),
+                        ),
+                        SpacingUtils.space20,
+                        // Social Media Section
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            _buildSocialIcon(FontAwesomeIcons.linkedin,
+                                'https://linkedin.com/in/ajay-kumar-02b9b525b'),
+                            _buildSocialIcon(FontAwesomeIcons.github,
+                                'https://github.com/ajayrana78767'),
+                            _buildSocialIcon(FontAwesomeIcons.twitter,
+                                'https://x.com/AjayRana78767'),
+                          ],
+                        ),
+                        SpacingUtils.space20,
+                        // Back to Top Button
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                // Add Back to Top action here
+                                // Use ScrollController to scroll to top
+                              },
+                              icon: Icon(FontAwesomeIcons.circleUp),
+                            ),
+                            Text('Back to Top'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Subscribe to Updates Section
+                        Text('Subscribe to Updates',
+                            style: TextStyle(fontSize: 16)),
+                        SpacingUtils.space10, // Text('Email Address'),
+                        // SizedBox(height: 5),
+                        Container(
+                          width: 490,
+                          color: Colors.white,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Enter your email',
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(.15),
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.red,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(.15),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 10),
+                        // _buildHoverButton(
+                        //     color: Colors.white,
+                        //     text: '',
+                        //     onPressed: () {}),
+                        SizedBox(
+                          width: 490,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Add subscribe action
+                            },
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.black87,
+                              backgroundColor: ColorsUtils.primaryColor,
+                              elevation: 0.0,
+                              shadowColor: Colors.white,
+                              minimumSize: Size(490, 56),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      16), // Match padding with TextField
+                            ).copyWith(
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero,
+                                ),
+                              ),
+                            ),
+                            child: Text('Subscribe Now'),
+                          ),
+                        ),
+                        SpacingUtils.space20,
+                        // Copyright Text
+                        Text(
+                          '© 2025 Ajay Kumar. All Rights Reserved.',
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
     // Stack(
@@ -696,12 +472,7 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
     //                   // Social Media Icons with Hover Effect
     //                   Row(
     //                     children: [
-    //                       _buildSocialIcon(FontAwesomeIcons.linkedin,
-    //                           'https://linkedin.com/in/ajay-kumar-02b9b525b'),
-    //                       _buildSocialIcon(FontAwesomeIcons.github,
-    //                           'https://github.com/ajayrana78767'),
-    //                       _buildSocialIcon(FontAwesomeIcons.twitter,
-    //                           'https://x.com/AjayRana78767'),
+    //
     //                     ],
     //                   ),
     // SpacingUtils.space20,
@@ -779,46 +550,86 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
   //     ),
   //   );
   // }
-  Widget _buildProjectCard(Map<String, String> project) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.cover),
-        color: Colors.tealAccent.shade100,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 8.0,
-            offset: const Offset(4, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildProjectCard(Map<String, String> project, int index) {
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          _hoverIndex = index; // Track the hovered card
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          _hoverIndex = -1; // Reset when cursor leaves
+        });
+      },
+      child: Stack(
         children: [
-          Text(
-            project['title']!,
-            style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+          // Background Image
+          Positioned.fill(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                image: DecorationImage(
+                  image: AssetImage(project['image']!),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
-          const SizedBox(height: 8.0),
-          Text(
-            project['description']!,
-            style: TextStyle(color: Colors.white),
+
+          // Blur Effect on Hover
+          if (_hoverIndex == index)
+            Positioned.fill(
+              child: AnimatedOpacity(
+                opacity: 1.0,
+                duration: const Duration(milliseconds: 300),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(color: Colors.transparent),
+                  ),
+                ),
+              ),
+            ),
+
+          // Content on Hover
+          Positioned.fill(
+            child: Center(
+              child: AnimatedOpacity(
+                opacity: _hoverIndex == index ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 300),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      project['title']!,
+                      style: const TextStyle(
+                        fontSize: 36.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      project['description']!,
+                      style: const TextStyle(color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
+
   //   Widget buildProjectCard(Map<String, String> project) {
   //   return Container(
   //     margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -854,42 +665,43 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
   // Function to build social media icons
   Widget _buildSocialIcon(IconData icon, String url) {
     return IconButton(
-      icon: FaIcon(icon, color: Colors.white),
+      icon: FaIcon(icon, color: Colors.black),
       onPressed: () async {
         if (!await launchUrl(Uri.parse(url),
             mode: LaunchMode.externalApplication)) {
           throw 'Could not launch $url';
         }
       },
-      hoverColor: Colors.blueAccent.withOpacity(0.2),
+      //  hoverColor: ColorsUtils.primaryColor.withOpacity(.2),
     );
   }
 
-  // Function to build modern hover buttons
-  Widget _buildHoverButton({
-    required String text,
-    required Color color,
-    Color borderColor = Colors.transparent,
-    Color textColor = Colors.white,
-    required VoidCallback onPressed,
-  }) {
-    return MouseRegion(
-      onEnter: (event) => setState(() {}),
-      onExit: (event) => setState(() {}),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          side: BorderSide(color: borderColor),
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 18, color: textColor),
-        ),
-      ),
-    );
-  }
+//   // Function to build modern hover buttons
+//   Widget _buildHoverButton({
+//     required String text,
+//     required Color color,
+//     Color borderColor = Colors.transparent,
+//     Color textColor = Colors.white,
+//     required VoidCallback onPressed,
+//   }) {
+//     return MouseRegion(
+//       onEnter: (event) => setState(() {}),
+//       onExit: (event) => setState(() {}),
+//       child: ElevatedButton(
+//         onPressed: onPressed,
+//         style: ElevatedButton.styleFrom(
+//           backgroundColor: color,
+//           side: BorderSide(color: borderColor),
+//           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+//           shape:
+//               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//         ),
+//         child: Text(
+//           text,
+//           style: TextStyle(fontSize: 18, color: textColor),
+//         ),
+//       ),
+//     );
+//   }
+// }
 }
