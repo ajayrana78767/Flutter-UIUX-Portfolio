@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_ux_portfolio/Utils/colors_utils.dart';
@@ -20,9 +19,24 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
   // late Animation<double> _fadeInAnimation;
   // late Animation<Offset> _slideAnimation;
   int _hoverIndex = -1; // Track hovered index
+  bool _isWorkHovered = false;
+  bool _showPopup = false;
+
   @override
   void initState() {
     super.initState();
+    // Show the popup for 2-3 seconds
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        _showPopup = true;
+      });
+
+      Future.delayed(Duration(seconds: 3), () {
+        setState(() {
+          _showPopup = false; // Hide the popup after 3 seconds
+        });
+      });
+    });
 
     // // Animation Controller for Background Effect
     // _animationController = AnimationController(
@@ -64,7 +78,59 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
     },
   ];
   int _currentIndex = 0;
+  // Helper Method to Build Hover Items
+  Widget _buildHoverText(String title, int index) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hoverIndex = index),
+      onExit: (_) => setState(() => _hoverIndex = -1),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: _hoverIndex == index ? Colors.blue : Colors.black,
+        ),
+      ),
+    );
+  }
 
+  // // Submenu Widget
+  // Widget _buildSubMenu() {
+  //   return Container(
+  //     margin: const EdgeInsets.only(top: 8),
+  //     padding: const EdgeInsets.all(8),
+  //     decoration: BoxDecoration(
+  //         // color: Colors.white,
+  //         // boxShadow: [
+  //         //   BoxShadow(
+  //         //     color: Colors.black.withOpacity(0.1),
+  //         //     blurRadius: 8,
+  //         //     spreadRadius: 2,
+  //         //   ),
+  //         // ],
+  //         // borderRadius: BorderRadius.circular(8),
+  //         ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         _buildSubMenuItem('UI/UX'),
+  //         _buildSubMenuItem('Flutter'),
+  //         _buildSubMenuItem('Graphic Design'),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // Submenu Item Widget
+  Widget _buildSubMenuItem(String title, VoidCallback onTap) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+      ),
+    );
+  }
   // @override
   // void dispose() {
   //   _animationController.dispose();
@@ -94,25 +160,137 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                   SpacingUtils.wspace30,
                   Spacer(),
-                  Text(
-                    'Work',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  // MenuButton(
+                  //   child: Text(
+                  //     'Work',
+                  //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  //   ),
+                  // ),
+                  // SpacingUtils.wspace30,
+                  // Text(
+                  //   'About',
+                  //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  // ),
+                  // SpacingUtils.wspace30,
+                  // Text(
+                  //   'My CV',
+                  //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  // ),
+                  // SpacingUtils.wspace30,
+                  // Text(
+                  //   'Contact',
+                  //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  // ),
+                  // Work Button with Popup Submenu
+                  PopupMenuButton<int>(
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: _buildSubMenuItem('UI/UX', () {}),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: _buildSubMenuItem('Flutter', () {}),
+                      ),
+                      PopupMenuItem(
+                        value: 3,
+                        child: _buildSubMenuItem('Graphic Design', () {}),
+                      ),
+                    ],
+                    child: MouseRegion(
+                      onEnter: (_) => setState(() => _isWorkHovered = true),
+                      onExit: (_) => setState(() => _isWorkHovered = false),
+                      child: Text(
+                        'Work',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: _isWorkHovered ? Colors.blue : Colors.black,
+                        ),
+                      ),
+                    ),
+                    offset: const Offset(
+                        0, 50), // Adjust to position the popup below the text
+                    color: Colors.white,
+                    elevation: 4,
                   ),
-                  SpacingUtils.wspace30,
-                  Text(
-                    'About',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                  ),
-                  SpacingUtils.wspace30,
-                  Text(
-                    'My CV',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                  ),
-                  SpacingUtils.wspace30,
-                  Text(
-                    'Contact',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                  ),
+
+                  //  MouseRegion(
+                  //     onEnter: (_) => setState(() => _isWorkHovered = true),
+                  //     onExit: (_) => setState(() => _isWorkHovered = false),
+                  //     child: Stack(
+                  //       clipBehavior: Clip.none, // Prevent clipping of the popup
+                  //       fit: StackFit.loose,
+                  //       children: [
+                  //         // Work Text
+                  //         Column(
+                  //           children: [
+                  //             Text(
+                  //               'Work',
+                  //               style: TextStyle(
+                  //                 fontSize: 18,
+                  //                 fontWeight: FontWeight.w500,
+                  //                 color:
+                  //                     _isWorkHovered ? Colors.blue : Colors.black,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         // Popup (Submenu) positioned below the 'Work' text
+                  //         if (_isWorkHovered)
+                  //           Positioned(
+                  //             top:
+                  //                 25, // Adjust this value to position the popup properly below the text
+                  //             child: _buildSubMenu(),
+                  //           ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  //    PopupMenuButton<int>(
+                  //     itemBuilder: (context) => [
+                  //       // popupmenu item 1
+                  //       PopupMenuItem(
+                  //         value: 1,
+                  //         // row has two child icon and text.
+                  //         child: Row(
+                  //           children: [
+                  //             Icon(Icons.star),
+                  //             SizedBox(
+                  //               // sized box with width 10
+                  //               width: 10,
+                  //             ),
+                  //             Text("Get The App")
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       // popupmenu item 2
+                  //       PopupMenuItem(
+                  //         value: 2,
+                  //         // row has two child icon and text
+                  //         child: Row(
+                  //           children: [
+                  //             Icon(Icons.chrome_reader_mode),
+                  //             SizedBox(
+                  //               // sized box with width 10
+                  //               width: 10,
+                  //             ),
+                  //             Text("About")
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ],
+                  //     offset: Offset(0, 100),
+                  //     color: Colors.grey,
+                  //     elevation: 2,
+                  //   ),
+
+                  const SizedBox(width: 30),
+                  _buildHoverText('About', 0),
+                  const SizedBox(width: 30),
+                  _buildHoverText('My CV', 1),
+                  const SizedBox(width: 30),
+                  _buildHoverText('Contact', 2),
+
                   Spacer(),
                 ],
               ),
@@ -615,7 +793,8 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
                     const SizedBox(height: 8.0),
                     Text(
                       project['description']!,
-                      style: const TextStyle(color: Colors.black,
+                      style: const TextStyle(
+                        color: Colors.black,
                         fontSize: 18.0,
                         fontWeight: FontWeight.normal,
                       ),
