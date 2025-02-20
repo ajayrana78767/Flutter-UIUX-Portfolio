@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
   int _hoverIndex = -1; // Track hovered index
   bool _isWorkHovered = false;
   bool _showPopup = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -79,16 +82,19 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
   ];
   int _currentIndex = 0;
   // Helper Method to Build Hover Items
-  Widget _buildHoverText(String title, int index) {
+  Widget _buildHoverText(String title, int index, VoidCallback onTap) {
     return MouseRegion(
       onEnter: (_) => setState(() => _hoverIndex = index),
       onExit: (_) => setState(() => _hoverIndex = -1),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          color: _hoverIndex == index ? Colors.blue : Colors.black,
+      child: InkWell(
+        onTap: onTap,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            color: _hoverIndex == index ? Colors.blue : Colors.black,
+          ),
         ),
       ),
     );
@@ -131,16 +137,25 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
+
   // @override
   // void dispose() {
   //   _animationController.dispose();
   //   super.dispose();
   // }
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0.0, // Top of the page
+      duration: Duration(milliseconds: 600), // Smooth scroll duration
+      curve: Curves.easeInOut, // Animation curve
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
             Padding(
@@ -285,11 +300,22 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
                   //   ),
 
                   const SizedBox(width: 30),
-                  _buildHoverText('About', 0),
+                  _buildHoverText('About', 0, () {}),
                   const SizedBox(width: 30),
-                  _buildHoverText('My CV', 1),
+                  _buildHoverText(
+                    'My CV',
+                    1,
+                    () async {
+                      final url = Uri.parse(
+                          'https://drive.google.com/uc?export=download&id=1DQbRzcs9uNJJ5wTJK4dIt38uVxpayDdL');
+                      if (!await launchUrl(url,
+                          mode: LaunchMode.externalApplication)) {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                  ),
                   const SizedBox(width: 30),
-                  _buildHoverText('Contact', 2),
+                  _buildHoverText('Contact', 2,(){}),
 
                   Spacer(),
                 ],
@@ -453,10 +479,7 @@ class _HomeSectionState extends State<HomePage> with TickerProviderStateMixin {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () {
-                                // Add Back to Top action here
-                                // Use ScrollController to scroll to top
-                              },
+                              onPressed: _scrollToTop,
                               icon: Icon(FontAwesomeIcons.circleUp),
                             ),
                             Text('Back to Top'),
