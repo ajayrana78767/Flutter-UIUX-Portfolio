@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_ux_portfolio/Utils/app_routes.dart';
 import 'package:flutter_ui_ux_portfolio/pages/home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,14 +13,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerDelegate: AppRoutes.router.routerDelegate,
+      routeInformationParser: AppRoutes.router.routeInformationParser,
+      routeInformationProvider: AppRoutes.router.routeInformationProvider,
       debugShowCheckedModeBanner: false,
       title: 'Ajay Kumar | Flutter Developer & UI/UX Designer',
       theme: ThemeData(
         textTheme: GoogleFonts.spaceGroteskTextTheme(),
       ),
       //   theme: ThemeData.light(),
-      home: HomePage(),
+      // home: HomePage(),
     );
   }
 }
@@ -215,10 +219,6 @@ class _SideNavBarState extends State<SideNavBar> {
   }
 }
 
-
-
-
-
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
 
@@ -383,4 +383,3 @@ class GlassContainer extends StatelessWidget {
     );
   }
 }
-
